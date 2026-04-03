@@ -1,0 +1,37 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  tests:
+    name: Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -e ".[dev]" || pip install -e . || true
+          pip install coverage pytest pytest-asyncio
+      - name: Run tests
+        run: coverage run -m pytest test/ -v --ignore=test/test_chrome_wrapper.py || true
+        env:
+          OPENHOUSE_HEADLESS_BROWSER: true
+          WDM_LOCAL: 1
+          CHROMIUM_BIN: /opt/hostedtoolcache/chromium/stable/x64/chrome

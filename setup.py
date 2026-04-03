@@ -1,0 +1,39 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="openhouse-bot",
+    version="1.0.0",
+    description="AI-powered apartment hunting bot - finds rentals in any city, notifies via Telegram or WhatsApp",
+    author="OpenHouse Contributors",
+    python_requires=">=3.9",
+    packages=find_packages(),
+    install_requires=[
+        "python-dotenv>=1.0.0",
+        "python-telegram-bot>=20.0",
+        "backoff>=2.2.1",
+        "ruamel.yaml>=0.17",
+        "prompt_toolkit>=3.0",
+        "requests>=2.28.0",
+        "beautifulsoup4>=4.11.0",
+        "pyyaml>=6.0",
+        "lxml>=4.9.0",
+        "selenium>=4.0.0",
+        "requests-random-user-agent>=1.0.0",
+        "apprise>=1.7.0",
+        "flask>=3.0.0",
+        "flask-restful>=0.3.10",
+        "pytz>=2023.3",
+        "pydantic>=2.0.0",
+        "undetected-chromedriver>=3.5.0",
+        "questionary>=2.0.0",
+        "ddgs>=8.0.0",
+        "setuptools>=68.0.0",
+        "firebase-admin>=6.0.0",
+    ],
+    entry_points={
+        "console_scripts": [
+            "openhouse-bot=openhouse.cli:main",
+        ],
+    },
+    url="https://github.com/masood1996-geo/openhouse-bot",
+)

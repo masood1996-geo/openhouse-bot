@@ -1,0 +1,28 @@
+﻿version: '3'
+
+services:
+  app:
+    build: .
+    shm_size: 512M # Workaround to fix docker crashes because of to small /dev/shm
+    platform: linux/amd64 # For M1 to install google-chrome-stable; However still crashes on M1 when launching chrome (selenium.common.exceptions.WebDriverException: Message: unknown error: unable to discover open window in chrome (Session info: headless chrome=109.0.5414.119))
+    command: python flathunt.py
+    restart: always
+    environment:
+      # - OPENHOUSE_TARGET_URLS=https://www.immobilienscout24.de/Suche/...;https://www.wg-gesucht.de/...
+      # - OPENHOUSE_DATABASE_LOCATION=
+      # - OPENHOUSE_GOOGLE_CLOUD_PROJECT_ID=
+      # - OPENHOUSE_VERBOSE_LOG=
+      - OPENHOUSE_LOOP_PERIOD_SECONDS=600
+      # - OPENHOUSE_MESSAGE_FORMAT=
+      # - OPENHOUSE_NOTIFIERS=telegram,mattermost,slack...
+      # - OPENHOUSE_TELEGRAM_BOT_TOKEN=160165XXXXXXX:...
+      # - OPENHOUSE_TELEGRAM_RECEIVER_IDS=12345...
+      # - OPENHOUSE_MATTERMOST_WEBHOOK_URL=
+      # - OPENHOUSE_SLACK_WEBHOOK_URL=
+      # - OPENHOUSE_WEBSITE_SESSION_KEY=
+      # - OPENHOUSE_WEBSITE_DOMAIN=
+      # - OPENHOUSE_2CAPTCHA_KEY=
+      # - OPENHOUSE_IMAGETYPERZ_TOKEN=
+      # - OPENHOUSE_HEADLESS_BROWSER=yes
+    volumes:
+      - ./:/usr/src/app # not ideal, but the only way to incorporate the database (processed_ids.db), which is currently created at runtime

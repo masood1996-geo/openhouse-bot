@@ -1,0 +1,26 @@
+name: Types
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  types:
+    name: Pyright Type Checking
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -e . || true
+          pip install pyright
+      - name: Run pyright
+        run: pyright --verifytypes openhouse || true

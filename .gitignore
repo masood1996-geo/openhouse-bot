@@ -1,0 +1,47 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environment Variables and Credentials
+.env
+.env.*
+.openhouse.yaml
+bot_runtime_config.yaml
+
+# Runtime DB and Logs
+bot_log.txt
+*.log
+processed_ids.db
+*.db
+chat_ids.txt
+user_prefs.json
+
+# Virtual Environments
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Project configuration
+.idea/
+.vscode/

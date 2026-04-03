@@ -1,0 +1,9 @@
+name: 'Python Linting'
+description: 'Run pylint'
+author: 'OpenHouse Contributors'
+branding:
+  color: 'orange'
+  icon: 'check-circle'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
