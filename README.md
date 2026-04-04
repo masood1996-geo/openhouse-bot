@@ -11,6 +11,7 @@ OpenHouse Bot scrapes 50+ real estate portals worldwide, filters results with su
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue?style=for-the-badge)]()
 [![AI Powered](https://img.shields.io/badge/AI-LLM%20Powered-FF6F00?style=for-the-badge&logo=openai&logoColor=white)]()
+[![Live Demo](https://img.shields.io/badge/🤗_Demo-Live_on_HuggingFace-orange?style=for-the-badge)](https://huggingface.co/spaces/masood1996/openhouse-bot)
 
 ---
 
@@ -24,6 +25,27 @@ OpenHouse Bot scrapes 50+ real estate portals worldwide, filters results with su
 ```
 
 </div>
+
+---
+
+## 🎮 Try it Live
+
+> **No installation needed — [try the live demo on Hugging Face](https://huggingface.co/spaces/masood1996/openhouse-bot)**
+>
+> The demo scrapes **6 real Berlin municipal housing portals** live. Real apartments, real prices, real links.
+
+<details>
+<summary><strong>📸 Screenshot Gallery (click to expand)</strong></summary>
+
+| Dashboard | Live Scan Results |
+|:-:|:-:|
+| ![Dashboard](docs/images/demo-landing.png) | ![Live Results](docs/images/demo-results.png) |
+
+| Architecture |
+|:-:|
+| ![Architecture](docs/images/demo-architecture.png) |
+
+</details>
 
 ---
 
