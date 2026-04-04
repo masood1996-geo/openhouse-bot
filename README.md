@@ -34,6 +34,10 @@ OpenHouse Bot scrapes 50+ real estate portals worldwide, filters results with su
 >
 > The demo scrapes **6 real Berlin municipal housing portals** live. Real apartments, real prices, real links.
 
+<div align="center">
+  <img src="docs/images/openhouse_bot_demo.webp" alt="OpenHouse Bot Animated Live Demo" width="100%" />
+</div>
+
 <details>
 <summary><strong>📸 Screenshot Gallery (click to expand)</strong></summary>
 
