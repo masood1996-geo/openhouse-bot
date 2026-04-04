@@ -162,7 +162,7 @@ class ExcludeSwapsFilter(AbstractFilter):
     SWAP_PATTERNS = re.compile(
         r'tausch|wohnungstausch|tauschangebot|tauschwohnung|'
         r'wohnung\s*tausch|swap|exchange|'
-        r'suche.*biete|biete.*suche|'
+        r'suche.*biete|biete.*suche|mietrabatt|studenten|nachmieter|'
         r'ringtausch|gegen\s*tausch|im\s*tausch',
         re.IGNORECASE
     )

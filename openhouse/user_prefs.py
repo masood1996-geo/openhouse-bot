@@ -1,4 +1,4 @@
-﻿"""User preferences manager for the apartment finder bot"""
+"""User preferences manager for the apartment finder bot"""
 import json
 import os
 from openhouse.logging import logger
@@ -11,7 +11,7 @@ DEFAULT_PREFS = {
     "min_size": 30,
     "max_size": None,
     "preferred_districts": [],
-    "excluded_titles": ["Tauschwohnung", "Wohnungstausch"],
+    "excluded_titles": ["Tauschwohnung", "Wohnungstausch", "Tausch", "Swap", "Mietrabatt", "Nachmieter", "Studenten"],
     "notifications_active": True,
     "wbs_required": False,
 }

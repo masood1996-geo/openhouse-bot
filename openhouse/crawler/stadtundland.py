@@ -1,4 +1,4 @@
-﻿"""Expose crawler for Stadt und Land"""
+"""Expose crawler for Stadt und Land"""
 import re
 import hashlib
 from bs4 import BeautifulSoup, Tag
@@ -75,6 +75,9 @@ class StadtUndLand(Crawler):
 
             ad_id = url.rstrip('/').split('/')[-1]
             processed_id = int(hashlib.sha256(ad_id.encode('utf-8')).hexdigest(), 16) % 10**16
+
+            if not price and not size:
+                continue
 
             entries.append({
                 'id': processed_id, 'image': image, 'url': url,
