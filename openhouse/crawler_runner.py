@@ -9,6 +9,9 @@ from openhouse.heartbeat import Heartbeat
 from openhouse.idmaintainer import IdMaintainer
 from openhouse.hunter import Hunter
 from openhouse.time_utils import get_random_time_jitter
+from openhouse.bot_events import (
+    EventBus, BotEvent, BotEventName, BotEventStatus,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +68,10 @@ def run_bot(user_prefs, ai_urls):
     config = Config("bot_runtime_config.yaml")
     config.init_searchers()
 
+    # Initialize shared event bus
+    event_bus = EventBus()
+    event_bus.emit_event(BotEvent.started(detail="OpenHouse Bot initializing"))
+
     # Diagnostics: show what was loaded
     target_urls = config.target_urls()
     print(f"\n[*] Loaded {len(target_urls)} target URLs:")
@@ -75,6 +82,13 @@ def run_bot(user_prefs, ai_urls):
     if 'telegram' in notifiers_list:
         print(f"    → Telegram bot token: ...{str(config.telegram_bot_token() or '')[-8:]}")
         print(f"    → Telegram receivers: {config.telegram_receiver_ids()}")
+
+    event_bus.emit(
+        BotEventName.CONFIG_LOADED,
+        status=BotEventStatus.COMPLETED,
+        detail=f"Loaded config with {len(target_urls)} URLs",
+        data={"urls": target_urls, "notifiers": notifiers_list},
+    )
 
     # Remove stale DB so first run sends all found apartments
     import os
@@ -87,7 +101,8 @@ def run_bot(user_prefs, ai_urls):
     # 1. Run the initial crawl logic inline
     print("\n[*] Starting initial crawl...")
     id_watch = IdMaintainer(f'{db_dir}/processed_ids.db')
-    hunter = Hunter(config, id_watch)
+    hunter = Hunter(config, id_watch, event_bus=event_bus)
+    event_bus.emit(BotEventName.BOT_READY, status=BotEventStatus.READY, detail="Bot ready")
     hunter.hunt_flats()
     
     # 2. Launch background monitoring
@@ -95,16 +110,36 @@ def run_bot(user_prefs, ai_urls):
         print("[*] Crawler running in background...")
         heartbeat = Heartbeat(config, 3600)
         counter = 1
+        cycle = 0
         while config.loop_is_active():
             counter += 1
+            cycle += 1
             counter = heartbeat.send_heartbeat(counter)
             
             sleep_period = config.loop_period_seconds()
             if config.random_jitter_enabled():
                 sleep_period = get_random_time_jitter(sleep_period)
-                
+
+            event_bus.emit(
+                BotEventName.LOOP_SLEEPING,
+                status=BotEventStatus.IDLE,
+                detail=f"Sleeping {sleep_period}s before cycle {cycle + 1}",
+                data={"sleep_seconds": sleep_period, "cycle": cycle},
+            )
             time.sleep(sleep_period)
+
+            event_bus.emit(
+                BotEventName.LOOP_CYCLE_START,
+                detail=f"Starting crawl cycle {cycle + 1}",
+                data={"cycle": cycle + 1},
+            )
             hunter.hunt_flats()
+            event_bus.emit(
+                BotEventName.LOOP_CYCLE_END,
+                status=BotEventStatus.COMPLETED,
+                detail=f"Cycle {cycle + 1} complete",
+                data={"cycle": cycle + 1},
+            )
 
     bg_thread = threading.Thread(target=_background_loop, daemon=True)
     bg_thread.start()
@@ -119,4 +154,9 @@ def run_bot(user_prefs, ai_urls):
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
+        event_bus.emit(
+            BotEventName.BOT_STOPPED,
+            status=BotEventStatus.COMPLETED,
+            detail="Bot stopped by user",
+        )
         print("\nStopping OpenHouse Bot...")
